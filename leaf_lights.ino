@@ -1,5 +1,3 @@
-#include <ESP8266WiFi.h>
-
 unsigned int fadeValue = 0;
 bool fadeIn = false;
 
@@ -10,34 +8,40 @@ void setup() {
 
     analogWriteRange(255);
     //pinMode(D0, OUTPUT);
+
+    pinMode(D5, OUTPUT);
+    pinMode(D6, INPUT);
 }
 
-void fadeInOut() {
-    for (int fadeValue = 0 ; fadeValue <= 255; fadeValue += 5) {
-        analogWrite(D1, fadeValue);
-        delay(30);
-    }
-    for (int fadeValue = 255 ; fadeValue >= 0; fadeValue -= 5) {
-        analogWrite(D1, fadeValue);
-        delay(30);
-    }
 
-    for (int fadeValue = 0 ; fadeValue <= 255; fadeValue += 5) {
-        analogWrite(D2, fadeValue);
-        delay(30);
-    }
-    for (int fadeValue = 255 ; fadeValue >= 0; fadeValue -= 5) {
-        analogWrite(D2, fadeValue);
-        delay(30);
-    }
-
-    for (int fadeValue = 0 ; fadeValue <= 255; fadeValue += 5) {
-        analogWrite(D3, fadeValue);
-        delay(30);
-    }
-    for (int fadeValue = 255 ; fadeValue >= 0; fadeValue -= 5) {
-        analogWrite(D3, fadeValue);
-        delay(30);
+class fadeInOut {
+    void fadeInOut() {
+        for (int fadeValue = 0 ; fadeValue <= 255; fadeValue += 5) {
+            analogWrite(D1, fadeValue);
+            delay(30);
+        }
+        for (int fadeValue = 255 ; fadeValue >= 0; fadeValue -= 5) {
+            analogWrite(D1, fadeValue);
+            delay(30);
+        }
+    
+        for (int fadeValue = 0 ; fadeValue <= 255; fadeValue += 5) {
+            analogWrite(D2, fadeValue);
+            delay(30);
+        }
+        for (int fadeValue = 255 ; fadeValue >= 0; fadeValue -= 5) {
+            analogWrite(D2, fadeValue);
+            delay(30);
+        }
+    
+        for (int fadeValue = 0 ; fadeValue <= 255; fadeValue += 5) {
+            analogWrite(D3, fadeValue);
+            delay(30);
+        }
+        for (int fadeValue = 255 ; fadeValue >= 0; fadeValue -= 5) {
+            analogWrite(D3, fadeValue);
+            delay(30);
+        }
     }
 }
 
@@ -61,8 +65,8 @@ void fadeBlueGreen() {
 }
 
 void randLED() {
-    analogWrite(D0, random(0,255)/2);
-    analogWrite(D1, random(0,255)/2);
+    analogWrite(D0, random(0,255)/1.5);
+    analogWrite(D1, random(0,255)/1.5);
     analogWrite(D2, random(0,255));
     delay(30);
 }
@@ -73,9 +77,15 @@ void loop() {
     //fadeInOut();
     randLED();
 
-    long value = analogRead(D8);
-    value = (6762/(value-9))-4;
-    Serial.println(value);
+    digitalWrite(D5, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(D5, LOW);
+    int duration = pulseIn(D6, HIGH);
+    float distanceCm = duration*0.034/2;
+    float distanceInch = duration*0.0133/2;
+
+    Serial.println(distanceCm);
+    delay(10);
 }
 
 
