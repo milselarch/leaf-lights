@@ -1,17 +1,11 @@
 class fadeInOut {
-    unsigned int fadeValue = 0;
-    
-    fadeInOut() {
-        for (int fadeValue = 0 ; fadeValue <= 255; fadeValue += 5) {
-            analogWrite(D1, fadeValue);
-            delay(30);
-        }
+public:
+    static void fade() {
+        unsigned int fadeValue = 0;
+        analogWrite(D1, 0);
+        analogWrite(D2, 0);
+        analogWrite(D3, 0);
         
-        for (int fadeValue = 255 ; fadeValue >= 0; fadeValue -= 5) {
-            analogWrite(D1, fadeValue);
-            delay(30);
-        }
-    
         for (int fadeValue = 0 ; fadeValue <= 255; fadeValue += 5) {
             analogWrite(D2, fadeValue);
             delay(30);
@@ -29,6 +23,16 @@ class fadeInOut {
         
         for (int fadeValue = 255 ; fadeValue >= 0; fadeValue -= 5) {
             analogWrite(D3, fadeValue);
+            delay(30);
+        }
+    
+        for (int fadeValue = 0 ; fadeValue <= 255; fadeValue += 5) {
+            analogWrite(D4, fadeValue);
+            delay(30);
+        }
+        
+        for (int fadeValue = 255 ; fadeValue >= 0; fadeValue -= 5) {
+            analogWrite(D4, fadeValue);
             delay(30);
         }
     }

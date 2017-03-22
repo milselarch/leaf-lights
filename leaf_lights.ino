@@ -17,7 +17,7 @@ void setup() {
     // put your setup code here, to run once:
     Serial.begin(57600);
     delay(3000);
-    analogWriteRange(250);
+    analogWriteRange(255);
     //pinMode(D0, OUTPUT);
 
     pinMode(D5, OUTPUT); //ultrasonic trigger pin
@@ -43,7 +43,11 @@ void loop() {
     }
 
     //Serial.println(fadeController.off);
-    fadeController.fadeInOut(0, 1); 
+    for (int k = 0; k < 50; k++) {
+        fadeController.fadeInOut(20, 1);
+    }
+
+    fadeInOut::fade();
 }
 
 
