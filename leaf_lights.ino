@@ -15,7 +15,7 @@ void setup() {
 
 
 class fadeInOut {
-    void fadeInOut() {
+    fadeInOut() {
         for (int fadeValue = 0 ; fadeValue <= 255; fadeValue += 5) {
             analogWrite(D1, fadeValue);
             delay(30);
@@ -43,7 +43,7 @@ class fadeInOut {
             delay(30);
         }
     }
-}
+};
 
 void fadeBlueGreen() {
     for (int fadeValue = 0 ; fadeValue <= 255; fadeValue += 5) {
@@ -71,21 +71,95 @@ void randLED() {
     delay(30);
 }
 
-void loop() {
-    // put your main code here, to run repeatedly:
-    // fade in from min to max in increments of 5 points
-    //fadeInOut();
-    randLED();
+void sort(float a[], int size) {
+    for (int i=0; i<(size-1); i++) {
+        for (int o = 0; o < (size-(i+1)); o++) {
+            if (a[o] > a[o+1]) {
+                float t = a[o];
+                a[o] = a[o+1];
+                a[o+1] = t;
+            }
+        }
+    }
+}
 
+float readDistance() {
     digitalWrite(D5, HIGH);
     delayMicroseconds(10);
     digitalWrite(D5, LOW);
     int duration = pulseIn(D6, HIGH);
     float distanceCm = duration*0.034/2;
     float distanceInch = duration*0.0133/2;
+    delay(11);
 
-    Serial.println(distanceCm);
-    delay(10);
+    return distanceCm;
+}
+
+float getStableValue() {
+    float prevDistance = -100;
+    
+    while (true) {
+        float distance = readDistance();
+        if (abs(distance - prevDistance) < 2) {
+            return distance;
+        } else {
+            prevDistance = distance;    
+        }     
+    }
+}
+
+
+
+void displayRGB(int RGB) {
+    int blue = 63 * (RGB % 4);
+    RGB /= 4;
+   
+    int green = 31 * (RGB % 8);
+    RGB /= 8;
+
+    int red = 31 * (RGB % 8);
+
+    analogWrite(D1, blue);
+    analogWrite(D2, red);
+    analogWrite(D3, green);
+}
+
+void loop() {
+    // put your main code here, to run repeatedly:
+    // fade in from min to max in increments of 5 points
+    //fadeInOut();
+    //randLED();
+
+    fadeBlueGreen();
+
+    //Serial.println(getMedianValue());
+
+    //float light = getStableValue();
+    //displayRGB(light);
+
+    
+
+    /*
+    if (8 > light) {
+        analogWrite(D1, int(light*31));
+        analogWrite(D2, 0);
+        analogWrite(D3, 0);
+    } else if (32 > light) {
+        analogWrite(D2, int(light*7));
+        analogWrite(D1, 0);
+        analogWrite(D3, 0);
+    } else if (255 > light) {
+        analogWrite(D3, int(light));
+        analogWrite(D1, 0);
+        analogWrite(D2, 0);
+    } else {
+        analogWrite(D3, 255);
+        analogWrite(D1, 0);
+        analogWrite(D2, 0);
+    }
+    */
+    
+    //Serial.println(int(light));
 }
 
 
